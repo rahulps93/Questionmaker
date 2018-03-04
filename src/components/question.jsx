@@ -1,7 +1,7 @@
 import React,{ Component } from 'react';
 import {Panel,Grid,Row,Col} from 'react-bootstrap';
 import classNames from 'classname';
-import Indivquestion from './indivquestion.jsx'
+import Indivquestion from './indivquestion.jsx';
 
 
 

@@ -30,7 +30,7 @@ this.props.inputchange(this.props.option.optionid,e.target.value);
     
   <Row className="show-grid"><Col xs={2} md={2}>{data}</Col>
     <Col xs={10} md={10}>
-    <input className="questioninput" onChange={this.inputchange} defaultValue={this.props.option.optionvalue} type="text"/>
+    <input className="questioninput" onChange={this.inputchange} defaultValue={this.props.option.optionvalue} type="text" />
     </Col>
     </Row>
    </div>

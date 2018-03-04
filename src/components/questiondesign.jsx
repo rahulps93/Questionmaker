@@ -1,7 +1,7 @@
 import React,{ Component } from 'react';
 import {Panel,Grid,Row,Col} from 'react-bootstrap';
 import Indivoption from './indivoption.jsx'
-
+import classNames from 'classname';
 
 
 
@@ -14,6 +14,9 @@ export default class QuestionDesign extends Component {
          this.addOption=this.addOption.bind(this);
          this.deleteOption=this.deleteOption.bind(this);
          this.handleImageChange=this.handleImageChange.bind(this);
+         this.triggerHandleImageChange=this.triggerHandleImageChange.bind(this);
+           this.clearPicture=this.clearPicture.bind(this);
+           this.inputChangeOption=this.inputChangeOption.bind(this);
               
     }
     addOption()
@@ -24,11 +27,24 @@ export default class QuestionDesign extends Component {
     {
       this.props.deleteOption(this.props.question.questionid);
     }
+    triggerHandleImageChange()
+    {
+      this.inputImgElement.click();
+    }
+    clearPicture()
+    {
+      this.props.clearPicture(this.props.question.questionid);
+    }
+    inputChangeOption(optionid,value)
+    {
+this.props.inputChangeOption(optionid,value,this.props.question.questionid);
+    }
     handleImageChange(e)
     {
  let file = e.target.files[0];
  this.props.handleImageChange(file,this.props.question.questionid);
     }
+
   inputchange(e)
   {
      this.props.inputchange(e.target.value,this.props.question.questionid);
@@ -40,11 +56,35 @@ export default class QuestionDesign extends Component {
    render() {
 let imagePreviewUrl = this.props.question.imagePreviewUrl;
     let $imagePreview = null;
+     let classfrimgpreview ;
+     let classnamefrbutton;
     if (imagePreviewUrl) {
       $imagePreview = (<img src={imagePreviewUrl} />);
-    } else {
-      $imagePreview = (<div className="previewText">Please select an Image for Preview</div>);
+    
+       classfrimgpreview = classNames({ 
+      imgPreview:true
+      
+});
+classnamefrbutton = classNames({ 
+      add:true,
+      button:true
+      
+});
     }
+      else
+      {
+  classfrimgpreview = classNames({ 
+      imgPreview:true,
+      displaynone:true
+      }); 
+      classnamefrbutton = classNames({ 
+      add:true,
+      button:true,
+      displaynone:true
+      
+});
+         }
+      
     let content;
     if(this.props.question.question)
     {
@@ -56,24 +96,26 @@ let imagePreviewUrl = this.props.question.imagePreviewUrl;
     </Row>   
     <Row className="show-grid"><Col xs={12} md={12}>
     <div className="underdiv">
-     <input className="fileInput" type="file" onChange={this.handleImageChange}  ref={(input) => { this.textInput = input; }} key={this.props.question.questionid} />
-         <button className="add button" onClick={this.uploadImage}>Upload</button>
+         <button className="add button" onClick={this.triggerHandleImageChange}>Upload Pic</button>
+          <button className={classnamefrbutton} onClick={this.clearPicture}>Clear Pic</button>
     </div>
    
      </Col>
     </Row>
+         <input className="fileInput" type="file" id="input" ref={input => this.inputImgElement = input} onChange={this.handleImageChange}  key={this.props.question.questionid} />
      <Row className="show-grid">
      <Col xs={12} md={12}>
      <div className="underdiv">
-      <div className="imgPreview">
+      <div className={classfrimgpreview}>
           {$imagePreview}
         </div>
      </div>
      </Col>
      </Row>
     <Row className="show-grid">
-    {this.props.question.options.map((option) => {  
-    return  <Indivoption option={option} inputchange={this.props.inputChangeOption}/>
+    {this.props.question.options.map((option,index) => { 
+    let key=`${this.props.question.questionid}+${index}`;
+    return  <Indivoption  key={key} option={option} inputchange={this.inputChangeOption}/>
     })} 
     </Row>
  <Row className="show-grid"><Col xs={12} md={12}>

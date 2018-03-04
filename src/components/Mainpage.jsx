@@ -28,6 +28,7 @@ this.inputChangeOption=this.inputChangeOption.bind(this);
 this.handleDeleteQuestion=this.handleDeleteQuestion.bind(this);
 this.setstatelocalstorage=this.setstatelocalstorage.bind(this);
 this.handleImageChange=this.handleImageChange.bind(this);
+this.clearPicture=this.clearPicture.bind(this);
               
     }
     componentWillMount()
@@ -82,6 +83,13 @@ handleImageChange(file,questionno)
 
     reader.readAsDataURL(file);
 }
+clearPicture(questionid)
+{
+   let index=this.state.questions.findIndex(x => x.questionid==questionid);
+   this.setState({questions:update(this.state.questions,{[index]:{file: {$set: ''},imagePreviewUrl: {$set: ''}}})});
+     this.setState({selectedQuestion:update(this.state.selectedQuestion,{file: {$set: ''},imagePreviewUrl: {$set: ''}})});
+
+}
 handleSelectQuestion(questionno)
 {
   let selectedquestion=this.state.questions.find(x => x.questionid === questionno);
@@ -120,9 +128,9 @@ this.setState({selectedQuestion:update(this.state.selectedQuestion,{$set:selecte
     this.setState({questions:update(this.state.questions, {[index]:{question: {$set: question }}}),inputvalue:question});
 
      }
-     inputChangeOption(optionid,optionvalue)
+     inputChangeOption(optionid,optionvalue,questionid)
      {
-      let indexquestion=this.state.selectedquestionid-1;
+      let indexquestion=this.state.questions.findIndex(x => x.questionid==questionid);
       let index=this.state.questions[indexquestion].options.findIndex(x => x.optionid==optionid);
       this.setState({questions:update(this.state.questions, {[indexquestion]:{options:{[index]:{optionvalue: {$set: optionvalue }}}}})});
      }
@@ -173,7 +181,7 @@ this.setState({selectedQuestion:update(this.state.selectedQuestion,{$set:selecte
       </Panel.Heading>
       <Panel.Body>
        <div>
-      <QuestionDesign handleImageChange={this.handleImageChange} inputChangeOption={this.inputChangeOption} addOption={this.addOption} deleteOption={this.deleteOption} question={this.state.selectedQuestion} inputchange={this.inputChange} />
+      <QuestionDesign clearPicture={this.clearPicture} handleImageChange={this.handleImageChange} inputChangeOption={this.inputChangeOption} addOption={this.addOption} deleteOption={this.deleteOption} question={this.state.selectedQuestion} inputchange={this.inputChange} />
        </div>
       </Panel.Body>
       </Panel>
